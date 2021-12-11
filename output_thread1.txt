@@ -168,3 +168,91 @@ running command: wr file1.txt xyz
 running command: cl file1.txt
 running command: cl file2.txt
 running command: mm 
+running command: mk file1.txt
+running command: op file1.txt w
+running command: wr file1.txt abcd
+running command: mk file2.txt
+running command: op file2.txt w
+running command: mm 
+running command: wr file2.txt 123
+running command: wr file1.txt xyz
+running command: cl file1.txt
+running command: cl file2.txt
+running command: mm 
+running command: mk file1.txt
+running command: op file1.txt w
+running command: wr file1.txt abcd
+running command: mk file2.txt
+running command: op file2.txt w
+running command: mm 
+running command: wr file2.txt 123
+running command: wr file1.txt xyz
+running command: cl file1.txt
+running command: cl file2.txt
+running command: mm 
+running command: mk file1.txt
+running command: op file1.txt w
+running command: wr file1.txt abcd
+running command: mk file2.txt
+running command: op file2.txt w
+running command: mm 
+running command: wr file2.txt 123
+running command: wr file1.txt xyz
+running command: cl file1.txt
+running command: cl file2.txt
+running command: mm 
+running command: mk file1.txt
+running command: op file1.txt w
+running command: wr file1.txt abcd
+running command: mk file2.txt
+running command: op file2.txt w
+running command: mm 
+running command: wr file2.txt 123
+running command: wr file1.txt xyz
+running command: cl file1.txt
+running command: cl file2.txt
+running command: mm 
+running command: mk file1.txt
+running command: op file1.txt w
+running command: wr file1.txt abcd
+running command: mk file2.txt
+running command: op file2.txt w
+running command: mm 
+running command: wr file2.txt 123
+running command: wr file1.txt xyz
+running command: cl file1.txt
+running command: cl file2.txt
+running command: mm 
+running command: mk file1.txt
+running command: op file1.txt w
+running command: wr file1.txt abcd
+running command: mk file2.txt
+running command: op file2.txt w
+running command: mm 
+running command: wr file2.txt 123
+running command: wr file1.txt xyz
+running command: cl file1.txt
+running command: cl file2.txt
+running command: mm 
+running command: mk file1.txt
+running command: op file1.txt w
+running command: wr file1.txt abcd
+running command: mk file2.txt
+running command: op file2.txt w
+running command: mm 
+running command: wr file2.txt 123
+running command: wr file1.txt xyz
+running command: cl file1.txt
+running command: cl file2.txt
+running command: mm 
+running command: mk file1.txt
+running command: op file1.txt w
+running command: wr file1.txt abcd
+running command: mk file2.txt
+running command: op file2.txt w
+running command: mm 
+running command: wr file2.txt 123
+running command: wr file1.txt xyz
+running command: cl file1.txt
+running command: cl file2.txt
+running command: mm 

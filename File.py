@@ -1,5 +1,7 @@
 import uuid
-import math;
+import math
+
+from colorama.ansi import Fore, Style;
 
 # Page Size in bytes
 PAGE_SIZE = 40
@@ -35,19 +37,41 @@ class File:
     self.opened = False;
     self.mode = 'r';
 
-  def read(self):
+  def read(self, startLocation, size):
     if(self.open and self.mode == 'r' and self.read_permission()):
-      print(self.content);  
+      print(self.content[startLocation: startLocation + size]);      
 
   def append(self, content):  
     if(self.open and self.mode == 'a' and self.write_permission()):
       self.content += (" " + content);
       self.update_size();
 
-  def write(self, content):
+  def replace(self, text, startLocation, size):
+    if(size > len(text)): 
+      print(f'{Fore.RED}number of bytes to write are greater than the text size.{Style.RESET_ALL}', end='\n\n');
+      return False;
+
+    if(startLocation > len(self.content) or startLocation < -1):
+      print(f'{Fore.RED}invalid start location.{Style.RESET_ALL}', end='\n\n');
+      return False;
+
+    if(startLocation == -1):
+      return text[:size] + self.content;
+    return self.content[: startLocation] + text[:size] + self.content[startLocation  + size:];    
+
+  def write(self, content, startLocation = None, size = None):
     if(self.open and self.mode == 'w'  and self.write_permission()):
-      self.content = content;
+      if(startLocation is None and size is None):
+        self.content = content;
+      else:
+        replaced_content = self.replace(content, startLocation, size);
+        if replaced_content:
+          self.content = replaced_content;
       self.update_size();
+
+  def truncate(self, maxSize):
+    self.content = self.content[:maxSize];
+    self.update_size();
 
   def read_permissions(self):
     permissions = "Permissions: ";

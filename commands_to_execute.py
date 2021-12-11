@@ -19,6 +19,9 @@ def create_file(name):
 def create_directory(name):
   return Directory(current_dir, name);
 
+def display_current_directory():
+  current_dir.display();
+
 def move_to_parent_directory():
   global current_dir;
   current_dir = current_dir.move_to_parent_directory();
@@ -39,14 +42,11 @@ def permission_valid(permission):
   return permission in ['r', 'w'];
 
 def list():
-  global current_dir;
   if(current_dir.empty()):
       print(f'{Fore.RED}directory is empty!{Style.RESET_ALL}');
   else:
     current_dir.list(); 
   print();
-  return; 
-
 
 def make_directory(args):
   if(current_dir.has_dir(args[0])):
@@ -54,28 +54,22 @@ def make_directory(args):
   else:
     current_dir.add_directory(create_directory(args[0])); 
     print(f'{Fore.GREEN}directory created.{Style.RESET_ALL}', end='\n\n');
-  return;
 
 def make_file(args):
-  global current_dir;
   if(current_dir.has_file(args[0])):
       print(f'{Fore.RED}file with this name already exists.{Style.RESET_ALL}', end='\n\n');
   else:
     current_dir.add_file(create_file(args[0])); 
     print(f'{Fore.GREEN}file created.{Style.RESET_ALL}', end='\n\n');
-  return;  
 
 def open_file(args):
-  global current_dir;
   if(current_dir.has_file(args[0])):
     current_dir.file(args[0]).open(args[1]);
     print(f'{Fore.GREEN}file opened.{Style.RESET_ALL}', end='\n\n');
   else:
     print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
-  return;
 
 def close_file(args):
-  global current_dir;
   if(current_dir.has_file(args[0])):
     current_dir.file(args[0]).close();
     print(f'{Fore.GREEN}file closed.{Style.RESET_ALL}', end='\n\n');
@@ -95,7 +89,7 @@ def read(args):
   elif(not file.read_permission()):
     print(f'{Fore.RED}you do not have permission to read this file.{Style.RESET_ALL}', end='\n\n');
   else:
-    file.read();
+    file.read(args[1], args[2]);
     print();
 
 
@@ -110,7 +104,7 @@ def write(args):
   elif(not file.write_permission()):
     print(f'{Fore.RED}you do not have permission to write to this file.{Style.RESET_ALL}', end='\n\n');
   else:
-    file.write(args[1]);
+    file.write(args[1]) if len(args) == 2 else file.write(args[1], args[2], args[3])
     print(f'{Fore.GREEN}file updated.{Style.RESET_ALL}', end='\n\n');
 
 
@@ -128,15 +122,30 @@ def append(args):
     file.append(args[1]);
     print(f'{Fore.GREEN}file updated.{Style.RESET_ALL}', end='\n\n');
 
+def move_file(args):
+  file = current_dir.file(args[0]);
+  if(not file):
+    print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+    return;
+  file.name = args[1];  
+  print(f'{Fore.GREEN}file moved.{Style.RESET_ALL}', end='\n\n');
+
+def truncate_file(args):
+  file = current_dir.file(args[0]);
+  if(not file):
+    print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+    return;
+  file.truncate(args[1]);
+  print(f'{Fore.GREEN}file truncated.{Style.RESET_ALL}', end='\n\n');
 
 def show_memory_map():
   if(len(root.files) > 0):
+    print();
     print('{:<16} {:<9} {:<16} {:<12}'.format('file', 'inode', 'size (bytes)', 'total pages'));
     root.traverse(root);
     print();
   else:
     print(f'{Fore.RED}nothing to show.{Style.RESET_ALL}', end='\n\n');
-
 
 def read_permission(args):
   if(current_dir.has_file(args[1])):
@@ -152,7 +161,6 @@ def grant_permission(args):
   else:
     print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
 
-
 def remove_permission(args):
   if(current_dir.has_file(args[1])):
     file = current_dir.file(args[1]);
@@ -160,8 +168,6 @@ def remove_permission(args):
     file.remove_permission(permission) if(permission_valid(permission)) else print(f'{Fore.RED}invalid permission.{Style.RESET_ALL}', end='\n\n');
   else:
     print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
-  return;  
-
 
 def remove_file(args):
   if(not current_dir.has_file(args[1])):
@@ -169,35 +175,30 @@ def remove_file(args):
   else:
     current_dir.remove_file(args[1]); 
     print(f'{Fore.GREEN}file removed.{Style.RESET_ALL}', end='\n\n');
-  return 
 
 def remove_directory(args):
   if(not current_dir.has_dir(args[1])):
     print(f'{Fore.RED}no such directory.{Style.RESET_ALL}', end='\n\n');
-    return;
   else:
     current_dir.remove_directory(args[1]); 
     print(f'{Fore.GREEN}directory removed.{Style.RESET_ALL}', end='\n\n');
-  return; 
 
 def change_directory(args):
   global current_dir;
+  # check if user wants to go to previous directory
+  if(args[0] == '..'):
+    if(current_dir.parent != ""):
+      current_dir = current_dir.parent; 
+    return;
+
+  if(args[0] == '/'):
+    current_dir = root;  
+    return;
+
   if(not current_dir.has_dir(args[0])):
     print(f'{Fore.RED}no such directory.{Style.RESET_ALL}', end='\n\n');
   else:
     current_dir = current_dir.child_directory(args[0]); 
-  return; 
-
-def parent_directory():
-  global current_dir;
-  if(current_dir.parent != ""):
-    current_dir = current_dir.parent; 
-  return;  
-
-def root_directory():
-  current_dir = root; 
-  return;
-
 
 
 

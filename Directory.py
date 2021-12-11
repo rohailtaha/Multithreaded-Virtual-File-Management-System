@@ -76,6 +76,7 @@ class Directory:
       path = temp.name + "/" + path;
       temp = temp.parent;
     path = temp.name + "/" + path;  
+    # print(path);
     print(f'{Fore.BLUE}==> {path}{Style.RESET_ALL}');
 
   # @ RETURN: 

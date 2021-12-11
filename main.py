@@ -2,13 +2,10 @@ from Directory import Directory;
 from File import File;
 from commands import commands_names as commands, instructions_commands_map;
 from colorama import Fore, Style;
-from inputs_thread1 import commands as commands_thread1;
-from inputs_thread2 import commands as commands_thread2;
-from inputs_thread3 import commands as commands_thread3;
 import threading
-import time
 import commands_to_execute as cte;
-
+from commands_to_execute import current_dir;
+import time;
 
 def run_command(cd):
 
@@ -36,6 +33,12 @@ def run_command(cd):
   elif(cd[0] == commands["append"]):
     cte.append(cd[1:]);
 
+  elif(cd[0] == commands["truncate_file"]):
+    cte.truncate_file(cd[1:]);
+
+  elif(cd[0] == commands["move_file"]):
+    cte.move_file(cd[1:]);
+
   elif(cd[0] == commands["read_permission"]):
     cte.read_permission(cd[1:]);
 
@@ -52,13 +55,7 @@ def run_command(cd):
     cte.remove_directory(cd[1:])
 
   elif(cd[0] == commands["change_directory"]):
-    cte.change_directory()
-
-  elif(cd[0] ==  commands["parent_directory"]):
-    cte.parent_directory()
-
-  elif(cd[0] ==  commands["root_directory"]):
-    cte.root_directory();
+    cte.change_directory(cd[1:])
 
   elif(cd[0] ==  commands["show_memory_map"]):
     cte.show_memory_map();
@@ -75,8 +72,6 @@ def run_command(cd):
   else:
     print(f'{Fore.RED}Invalid command \'{cd}\'{Style.RESET_ALL}');
 
-
-  
 
 def begin(thread_num):
 
@@ -98,6 +93,7 @@ def begin(thread_num):
   input_file = open('input_thread' + str(thread_num) + '.txt');
   output_file = open('output_thread' + str(thread_num) + '.txt', 'a');
   while(True):
+    cte.display_current_directory();
     line = input_file.readline();
     if(line == ''):
       break;
@@ -110,16 +106,17 @@ def begin(thread_num):
 
 NUMBER_OF_USERS = 1;
 
-# for i in range(NUMBER_OF_USERS):
-#   thread = threading.Thread(target=begin, args=([1]))
-#   thread.start();
+for i in range(NUMBER_OF_USERS):
+  thread = threading.Thread(target=begin, args=([2]))
+  thread.start();
   
-# time.sleep(2)
-run_command(['mk', 'file.txt']);
-run_command(['op', 'file.txt', 'w']);
-run_command(['wr', 'file.txt', 'This is some content']);
-run_command(['op', 'file.txt', 'r']);
-run_command(['rd', 'file.txt']);
+# time.sleep(1)
+# run_command(['mkdir', 'dir1']);
+# run_command(['cd', 'dir1']);
+# run_command(['mk', 'file.txt']);
+# run_command(['ls']);
+# run_command(['cd', '/']);
+# run_command(['ls']);
 
 
 
