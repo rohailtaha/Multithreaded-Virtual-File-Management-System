@@ -1,12 +1,14 @@
+from os import read
 from Directory import Directory;
 from File import File;
-from commands import commands, commands_desc;
+from commands import commands, commands_desc, instructions_commands_map;
 from colorama import Fore, Style;
 from inputs_thread1 import commands as commands_thread1;
-import math;
+from inputs_thread2 import commands as commands_thread2;
+from inputs_thread3 import commands as commands_thread3;
+import threading
+import time
 
-# Page Size in bytes
-PAGE_SIZE = 20
 root = Directory('', 'root');
 
 current_dir = root;
@@ -72,26 +74,50 @@ def run_command(cd):
       print(f'{Fore.GREEN}file created.{Style.RESET_ALL}', end='\n\n');
     return;
 
+  if(cd[0] == commands["open"]):
+    if(current_dir.has_file(cd[1])):
+      current_dir.file(cd[1]).open(cd[2]);
+      print(f'{Fore.GREEN}file opened.{Style.RESET_ALL}', end='\n\n');
+    else:
+      print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+    return;
+
+  if(cd[0] == commands["close"]):
+    if(current_dir.has_file(cd[1])):
+      current_dir.file(cd[1]).close();
+      print(f'{Fore.GREEN}file closed.{Style.RESET_ALL}', end='\n\n');
+    else:
+      print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+    return;
+
   if(cd[0] == commands["read"]):
     if(current_dir.has_file(cd[1])):
       current_dir.file(cd[1]).read();
       print();
+    elif(current_dir.file(cd[1]).opened == False or current_dir.file(cd[1]).mode != 'r'):
+      print(f'{Fore.RED}file is not opened for reading.{Style.RESET_ALL}', end='\n\n');
     else:
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
     return;
 
   if(cd[0] == commands["write"]):
     if(current_dir.has_file(cd[1])):
-      current_dir.file(cd[1]).write(cd[2]);
+      content  = ' '.join(word for word in cd[2:]);
+      current_dir.file(cd[1]).write(content);
       print(f'{Fore.GREEN}file updated.{Style.RESET_ALL}', end='\n\n');
+    elif(current_dir.file(cd[1]).opened == False or current_dir.file(cd[1]).mode != 'w'):
+      print(f'{Fore.RED}file is not opened for writing.{Style.RESET_ALL}', end='\n\n');
     else:
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
     return;
 
   if(cd[0] == commands["append"]):
     if(current_dir.has_file(cd[1])):
-      current_dir.file(cd[1]).append(cd[2]);
+      content  = ' '.join(word for word in cd[2:]);
+      current_dir.file(cd[1]).append(content);
       print(f'{Fore.GREEN}file updated.{Style.RESET_ALL}', end='\n\n');
+    elif(current_dir.file(cd[1]).opened == False or current_dir.file(cd[1]).mode != 'a'):
+      print(f'{Fore.RED}file is not opened for appending.{Style.RESET_ALL}', end='\n\n');
     else:
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
     return;
@@ -157,7 +183,7 @@ def run_command(cd):
 
   if(cd[0] ==  commands["memory_map"]):
     if(len(root.files) > 0):
-      print('{:<16} {:<9} {:<20}'.format('file', 'inode', 'size (bytes)'));
+      print('{:<16} {:<9} {:<16} {:<12}'.format('file', 'inode', 'size (bytes)', 'total pages'));
       root.traverse(root);
       print();
     else:
@@ -177,21 +203,48 @@ def run_command(cd):
 
   else:
     print(f'{Fore.RED}Invalid command \'{cd}\'{Style.RESET_ALL}');
+
+
   
-  current_dir.display();
 
+def begin(thread_num):
 
-def start():
-  # cd = "";
-  # current_dir.display();
+  def getInstruction(line):
+    return line.split(' ')[0].strip();
+  def getInstructionArguments(line):
+    # remove new line character from line; 
+    line = line.strip();
+    # check if intruction has any arguments: 
+    if(len(line.split(' ')) > 1):
+      return line.split(' ')[1].split(',');
+    return [''];
 
+  def get_command(line):
+    command = instructions_commands_map[getInstruction(line)];
+    command_arguments = getInstructionArguments(line);
+    return ' '.join(s for s in [command] + command_arguments);
 
-  for cd in commands_thread1:
-    print("running command: ", cd);
-    run_command(cd.split(" "));
+  input_file = open('input_thread' + str(thread_num) + '.txt');
+  output_file = open('output_thread' + str(thread_num) + '.txt', 'a');
+  while(True):
+    line = input_file.readline();
+    if(line == ''):
+      break;
+    command = instructions_commands_map[getInstruction(line)];
+    command_arguments = getInstructionArguments(line);
 
-start();
+    print('thread:', thread_num ,", command:", get_command(line));
+    output_file.write("running command: " + get_command(line) + "\n");
+    run_command([command] + command_arguments);
 
+NUMBER_OF_USERS = 1;
+
+for i in range(NUMBER_OF_USERS):
+  thread = threading.Thread(target=begin, args=([1]))
+  thread.start();
+  
+# time.sleep(2)
+# run_command(['mm']);
 
 
 

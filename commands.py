@@ -13,6 +13,8 @@ commands = {
   "memory_map": "mm",
   "list_commands": "cmds",
   "list_detailed_commands": "cmdsd",
+  "open": "op",
+  "close": "cl",
   "read": "rd",
   "write": "wr",
   "append": "ap",
@@ -21,6 +23,22 @@ commands = {
   "grant_permission": "pm",
   "exit": "ex"
 }
+
+instructions_commands_map = {
+  "create" : "mk",
+  "delete" : "rm",
+  "mkdir" : "mkdir",
+  "chdir" : "cd",
+  "move" : "mk",
+  "open" : "op",
+  "close" : "cl",
+  "write_to_file" : "wr",
+  "write_tofile" : "wr",
+  "read_from_file" : "rd",
+  "truncate_file" : "mk",
+  "show_memory_map" : "mm",
+}
+
 
 commands_desc = [
   {

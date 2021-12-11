@@ -97,7 +97,7 @@ class Directory:
   
   def traverse(self, dir):
     for file in dir.files:
-      print('{:<16} {:<9} {:<20}'.format(file.name, file.inode, file.size));
+      print('{:<16} {:<9} {:<16} {:<12}'.format(file.name, file.inode, file.size, file.pages));
     # call recursively for child directries
     for directory in dir.directories:
       self.traverse(directory)  

@@ -1,5 +1,8 @@
-import uuid;
+import uuid
+import math;
 
+# Page Size in bytes
+PAGE_SIZE = 40
 
 class File:
   def __init__(self, file):
@@ -11,9 +14,12 @@ class File:
     self.starting_page_address = file['starting_page_address'];
     # permissions = ['r', 'w'] for read, write.
     self.permissions= ['r', 'w'];
+    self.mode = 'r';
+    self.opened = False;
 
   def update_size(self):
-    self.size = len(self.content) + 1;   
+    self.size = len(self.content) + 1;
+    self.pages = math.ceil(self.size / PAGE_SIZE);   
 
   def write_permission(self):
     return 'w' in self.permissions;
@@ -21,17 +27,25 @@ class File:
   def read_permission(self):
     return 'r' in self.permissions;  
 
+  def open(self, mode):
+    self.open = True;
+    self.mode = mode;
+
+  def close(self):
+    self.open = False;
+    self.mode = 'r';
+
   def read(self):
-    if(self.read_permission()):
+    if(self.open and self.mode == 'r' and self.read_permission()):
       print(self.content);  
 
   def append(self, content):  
-    if(self.write_permission()):
+    if(self.open and self.mode == 'a' and self.write_permission()):
       self.content += (" " + content);
       self.update_size();
 
   def write(self, content):
-    if(self.write_permission()):
+    if(self.open and self.mode == 'w'  and self.write_permission()):
       self.content = content;
       self.update_size();
 
