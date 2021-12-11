@@ -1,204 +1,75 @@
-from os import read
 from Directory import Directory;
 from File import File;
-from commands import commands, commands_desc, instructions_commands_map;
+from commands import commands_names as commands, instructions_commands_map;
 from colorama import Fore, Style;
 from inputs_thread1 import commands as commands_thread1;
 from inputs_thread2 import commands as commands_thread2;
 from inputs_thread3 import commands as commands_thread3;
 import threading
 import time
-
-root = Directory('', 'root');
-
-current_dir = root;
-
-
-def create_file(name):
-  return File({
-    "name": name, 
-    "content": "",
-    "size": 1, 
-    "pages": 1, 
-    "starting_page_address": 0,
-  });
-
-def create_directory(name):
-  return Directory(current_dir, name);
-
-def move_to_parent_directory():
-  global current_dir;
-  current_dir = current_dir.move_to_parent_directory();
-
-def list_commands():
-  print("List of all commands:");
-  for command in commands_desc:
-    print(command['name'], end="  ");
-  print("");  
-
-def list_commands_with_desc():
-  print("Details of all commands:");
-  for command in commands_desc:
-    print('{:<8} {:<70}'.format(command['name'] + ": ", command['description']));
-  print("");  
-
-def permission_valid(permission):  
-  return permission in ['r', 'w'];
-
+import commands_to_execute as cte;
 
 
 def run_command(cd):
-  global current_dir;
 
   if(cd[0] == commands["list"]):
-    if(current_dir.empty()):
-      print(f'{Fore.RED}directory is empty!{Style.RESET_ALL}');
-    else:
-      current_dir.list(); 
-    print();
-    return; 
+    cte.list();
 
-  if(cd[0] == commands["make_directory"]):
-    if(current_dir.has_dir(cd[1])):
-      print(f'{Fore.RED}directory with this name already exists.{Style.RESET_ALL}', end='\n\n');
-    else:
-      current_dir.add_directory(create_directory(cd[1])); 
-      print(f'{Fore.GREEN}directory created.{Style.RESET_ALL}', end='\n\n');
-    return;
+  elif(cd[0] == commands["make_directory"]):
+    cte.make_directory(cd[1:]);
 
-  if(cd[0] == commands["make_file"]):
-    if(current_dir.has_file(cd[1])):
-      print(f'{Fore.RED}file with this name already exists.{Style.RESET_ALL}', end='\n\n');
-    else:
-      current_dir.add_file(create_file(cd[1])); 
-      print(f'{Fore.GREEN}file created.{Style.RESET_ALL}', end='\n\n');
-    return;
+  elif(cd[0] == commands["make_file"]):
+    cte.make_file(cd[1:]);
 
-  if(cd[0] == commands["open"]):
-    if(current_dir.has_file(cd[1])):
-      current_dir.file(cd[1]).open(cd[2]);
-      print(f'{Fore.GREEN}file opened.{Style.RESET_ALL}', end='\n\n');
-    else:
-      print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
-    return;
+  elif(cd[0] == commands["open_file"]):
+    cte.open_file(cd[1:]);
 
-  if(cd[0] == commands["close"]):
-    if(current_dir.has_file(cd[1])):
-      current_dir.file(cd[1]).close();
-      print(f'{Fore.GREEN}file closed.{Style.RESET_ALL}', end='\n\n');
-    else:
-      print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
-    return;
+  elif(cd[0] == commands["close_file"]):
+    cte.close_file(cd[1:]);
 
-  if(cd[0] == commands["read"]):
-    if(current_dir.has_file(cd[1])):
-      current_dir.file(cd[1]).read();
-      print();
-    elif(current_dir.file(cd[1]).opened == False or current_dir.file(cd[1]).mode != 'r'):
-      print(f'{Fore.RED}file is not opened for reading.{Style.RESET_ALL}', end='\n\n');
-    else:
-      print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
-    return;
+  elif(cd[0] == commands["read"]):
+    cte.read(cd[1:]);
 
-  if(cd[0] == commands["write"]):
-    if(current_dir.has_file(cd[1])):
-      content  = ' '.join(word for word in cd[2:]);
-      current_dir.file(cd[1]).write(content);
-      print(f'{Fore.GREEN}file updated.{Style.RESET_ALL}', end='\n\n');
-    elif(current_dir.file(cd[1]).opened == False or current_dir.file(cd[1]).mode != 'w'):
-      print(f'{Fore.RED}file is not opened for writing.{Style.RESET_ALL}', end='\n\n');
-    else:
-      print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
-    return;
+  elif(cd[0] == commands["write"]):
+    cte.write(cd[1:]);
 
-  if(cd[0] == commands["append"]):
-    if(current_dir.has_file(cd[1])):
-      content  = ' '.join(word for word in cd[2:]);
-      current_dir.file(cd[1]).append(content);
-      print(f'{Fore.GREEN}file updated.{Style.RESET_ALL}', end='\n\n');
-    elif(current_dir.file(cd[1]).opened == False or current_dir.file(cd[1]).mode != 'a'):
-      print(f'{Fore.RED}file is not opened for appending.{Style.RESET_ALL}', end='\n\n');
-    else:
-      print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
-    return;
+  elif(cd[0] == commands["append"]):
+    cte.append(cd[1:]);
 
-  if(cd[0] == commands["read_permission"]):
-    if(current_dir.has_file(cd[1])):
-      current_dir.file(cd[1]).read_permissions();
-    else:
-      print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
-    return;
+  elif(cd[0] == commands["read_permission"]):
+    cte.read_permission(cd[1:]);
 
-  if(cd[0] == commands["grant_permission"]):
-    if(current_dir.has_file(cd[1])):
-      file = current_dir.file(cd[1]);
-      permission = input('Permsission (r -> read, w -> write): ');
-      file.grant_permission(permission) if(permission_valid(permission)) else print(f'{Fore.RED}invalid permission.{Style.RESET_ALL}', end='\n\n');
-    else:
-      print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
-    return;
+  elif(cd[0] == commands["grant_permission"]):
+    cte.grant_permission(cd[1:]);
 
-  if(cd[0] == commands["remove_permission"]):
+  elif(cd[0] == commands["remove_permission"]):
+    cte.remove_permission(cd[1:]);
+    
+  elif(cd[0] ==  commands["remove_file"]):
+    cte.remove_file(cd[1:]);
 
-    if(current_dir.has_file(cd[1])):
-      file = current_dir.file(cd[1]);
-      permission = input('Permsission to remove (r -> read, w -> write): ');
-      file.remove_permission(permission) if(permission_valid(permission)) else print(f'{Fore.RED}invalid permission.{Style.RESET_ALL}', end='\n\n');
-    else:
-      print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
-    return;
+  elif(cd[0] ==  commands["remove_directory"]):
+    cte.remove_directory(cd[1:])
 
-  if(cd[0] ==  commands["remove_file"]):
-    if(not current_dir.has_file(cd[1])):
-      print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
-    else:
-      current_dir.remove_file(cd[1]); 
-      print(f'{Fore.GREEN}file removed.{Style.RESET_ALL}', end='\n\n');
-    return 
+  elif(cd[0] == commands["change_directory"]):
+    cte.change_directory()
 
-  if(cd[0] ==  commands["remove_directory"]):
-    if(not current_dir.has_dir(cd[1])):
-      print(f'{Fore.RED}no such directory.{Style.RESET_ALL}', end='\n\n');
-      return;
-    else:
-      current_dir.remove_directory(cd[1]); 
-      print(f'{Fore.GREEN}directory removed.{Style.RESET_ALL}', end='\n\n');
-    return; 
+  elif(cd[0] ==  commands["parent_directory"]):
+    cte.parent_directory()
 
-  if(cd[0] == commands["change_directory"]):
-    if(not current_dir.has_dir(cd[1])):
-      print(f'{Fore.RED}no such directory.{Style.RESET_ALL}', end='\n\n');
-    else:
-      current_dir = current_dir.child_directory(cd[1]); 
-    return; 
+  elif(cd[0] ==  commands["root_directory"]):
+    cte.root_directory();
 
-  if(cd[0] ==  commands["parent_directory"]):
-    if(current_dir.parent != ""):
-      current_dir = current_dir.parent; 
-    return;  
-
-  if(cd[0] ==  commands["root_directory"]):
-    current_dir = root; 
-    return;  
-
-  if(cd[0] ==  commands["memory_map"]):
-    if(len(root.files) > 0):
-      print('{:<16} {:<9} {:<16} {:<12}'.format('file', 'inode', 'size (bytes)', 'total pages'));
-      root.traverse(root);
-      print();
-    else:
-      print(f'{Fore.RED}nothing to show.{Style.RESET_ALL}', end='\n\n');
-    return;
+  elif(cd[0] ==  commands["show_memory_map"]):
+    cte.show_memory_map();
      
-  if(cd[0] ==  commands["list_commands"]):
-    list_commands();
-    return; 
+  elif(cd[0] ==  commands["list_commands"]):
+    cte.list_commands();
 
-  if(cd[0] ==  commands["list_detailed_commands"]):
-    list_commands_with_desc();
-    return; 
+  elif(cd[0] ==  commands["list_detailed_commands"]):
+    cte.list_commands_with_desc();
 
-  if(cd[0] == commands["exit"]):
+  elif(cd[0] == commands["exit"]):
     exit(0); 
 
   else:
@@ -239,12 +110,18 @@ def begin(thread_num):
 
 NUMBER_OF_USERS = 1;
 
-for i in range(NUMBER_OF_USERS):
-  thread = threading.Thread(target=begin, args=([1]))
-  thread.start();
+# for i in range(NUMBER_OF_USERS):
+#   thread = threading.Thread(target=begin, args=([1]))
+#   thread.start();
   
 # time.sleep(2)
-# run_command(['mm']);
+run_command(['mk', 'file.txt']);
+run_command(['op', 'file.txt', 'w']);
+run_command(['wr', 'file.txt', 'This is some content']);
+run_command(['op', 'file.txt', 'r']);
+run_command(['rd', 'file.txt']);
+
+
 
 
 

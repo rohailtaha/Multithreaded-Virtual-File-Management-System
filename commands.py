@@ -1,7 +1,7 @@
 
 
 # Total commands =  18 
-commands = {
+commands_names = {
   "list": "ls",
   "make_file": "mk",
   "make_directory": "mkdir",
@@ -10,11 +10,11 @@ commands = {
   "change_directory": "cd",
   "parent_directory": "cd ..",
   "root_directory": "cd /",
-  "memory_map": "mm",
+  "show_memory_map": "mm",
   "list_commands": "cmds",
   "list_detailed_commands": "cmdsd",
-  "open": "op",
-  "close": "cl",
+  "open_file": "op",
+  "close_file": "cl",
   "read": "rd",
   "write": "wr",
   "append": "ap",

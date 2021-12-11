@@ -28,11 +28,11 @@ class File:
     return 'r' in self.permissions;  
 
   def open(self, mode):
-    self.open = True;
+    self.opened = True;
     self.mode = mode;
 
   def close(self):
-    self.open = False;
+    self.opened = False;
     self.mode = 'r';
 
   def read(self):

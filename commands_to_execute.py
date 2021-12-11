@@ -1,0 +1,208 @@
+from colorama.ansi import Fore, Style
+from Directory import Directory
+from File import File
+from commands import commands_desc;
+
+root = Directory('', 'root');
+
+current_dir = root;
+
+def create_file(name):
+  return File({
+    "name": name, 
+    "content": "",
+    "size": 0, 
+    "pages": 0, 
+    "starting_page_address": 0,
+  });
+
+def create_directory(name):
+  return Directory(current_dir, name);
+
+def move_to_parent_directory():
+  global current_dir;
+  current_dir = current_dir.move_to_parent_directory();
+
+def list_commands():
+  print("List of all commands:");
+  for command in commands_desc:
+    print(command['name'], end="  ");
+  print("");  
+
+def list_commands_with_desc():
+  print("Details of all commands:");
+  for command in commands_desc:
+    print('{:<8} {:<70}'.format(command['name'] + ": ", command['description']));
+  print("");  
+
+def permission_valid(permission):  
+  return permission in ['r', 'w'];
+
+def list():
+  global current_dir;
+  if(current_dir.empty()):
+      print(f'{Fore.RED}directory is empty!{Style.RESET_ALL}');
+  else:
+    current_dir.list(); 
+  print();
+  return; 
+
+
+def make_directory(args):
+  if(current_dir.has_dir(args[0])):
+    print(f'{Fore.RED}directory with this name already exists.{Style.RESET_ALL}', end='\n\n');
+  else:
+    current_dir.add_directory(create_directory(args[0])); 
+    print(f'{Fore.GREEN}directory created.{Style.RESET_ALL}', end='\n\n');
+  return;
+
+def make_file(args):
+  global current_dir;
+  if(current_dir.has_file(args[0])):
+      print(f'{Fore.RED}file with this name already exists.{Style.RESET_ALL}', end='\n\n');
+  else:
+    current_dir.add_file(create_file(args[0])); 
+    print(f'{Fore.GREEN}file created.{Style.RESET_ALL}', end='\n\n');
+  return;  
+
+def open_file(args):
+  global current_dir;
+  if(current_dir.has_file(args[0])):
+    current_dir.file(args[0]).open(args[1]);
+    print(f'{Fore.GREEN}file opened.{Style.RESET_ALL}', end='\n\n');
+  else:
+    print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+  return;
+
+def close_file(args):
+  global current_dir;
+  if(current_dir.has_file(args[0])):
+    current_dir.file(args[0]).close();
+    print(f'{Fore.GREEN}file closed.{Style.RESET_ALL}', end='\n\n');
+  else:
+    print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+  return;
+
+
+def read(args):
+  file = current_dir.file(args[0]);
+  if(not file):
+    print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+  elif(file.opened == False):
+    print(f'{Fore.RED}file is not opened.{Style.RESET_ALL}', end='\n\n');
+  elif(file.mode != 'r'):
+    print(f'{Fore.RED}file is not opened in read mode.{Style.RESET_ALL}', end='\n\n');
+  elif(not file.read_permission()):
+    print(f'{Fore.RED}you do not have permission to read this file.{Style.RESET_ALL}', end='\n\n');
+  else:
+    file.read();
+    print();
+
+
+def write(args):
+  file = current_dir.file(args[0]);
+  if(not file):
+    print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+  elif(file.opened == False):
+    print(f'{Fore.RED}file is not opened.{Style.RESET_ALL}', end='\n\n');
+  elif(file.mode != 'w'):
+    print(f'{Fore.RED}file is not opened in write mode.{Style.RESET_ALL}', end='\n\n');
+  elif(not file.write_permission()):
+    print(f'{Fore.RED}you do not have permission to write to this file.{Style.RESET_ALL}', end='\n\n');
+  else:
+    file.write(args[1]);
+    print(f'{Fore.GREEN}file updated.{Style.RESET_ALL}', end='\n\n');
+
+
+def append(args):
+  file = current_dir.file(args[0]);
+  if(not file):
+    print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+  elif(file.opened == False):
+    print(f'{Fore.RED}file is not opened.{Style.RESET_ALL}', end='\n\n');
+  elif(file.mode != 'a'):
+    print(f'{Fore.RED}file is not opened in append mode.{Style.RESET_ALL}', end='\n\n');
+  elif(not file.write_permission()):
+    print(f'{Fore.RED}you do not have permission to write to this file.{Style.RESET_ALL}', end='\n\n');
+  else:
+    file.append(args[1]);
+    print(f'{Fore.GREEN}file updated.{Style.RESET_ALL}', end='\n\n');
+
+
+def show_memory_map():
+  if(len(root.files) > 0):
+    print('{:<16} {:<9} {:<16} {:<12}'.format('file', 'inode', 'size (bytes)', 'total pages'));
+    root.traverse(root);
+    print();
+  else:
+    print(f'{Fore.RED}nothing to show.{Style.RESET_ALL}', end='\n\n');
+
+
+def read_permission(args):
+  if(current_dir.has_file(args[1])):
+    current_dir.file(args[1]).read_permissions();
+  else:
+    print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+
+def grant_permission(args):
+  if(current_dir.has_file(args[1])):
+    file = current_dir.file(args[1]);
+    permission = input('Permsission (r -> read, w -> write): ');
+    file.grant_permission(permission) if(permission_valid(permission)) else print(f'{Fore.RED}invalid permission.{Style.RESET_ALL}', end='\n\n');
+  else:
+    print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+
+
+def remove_permission(args):
+  if(current_dir.has_file(args[1])):
+    file = current_dir.file(args[1]);
+    permission = input('Permsission to remove (r -> read, w -> write): ');
+    file.remove_permission(permission) if(permission_valid(permission)) else print(f'{Fore.RED}invalid permission.{Style.RESET_ALL}', end='\n\n');
+  else:
+    print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+  return;  
+
+
+def remove_file(args):
+  if(not current_dir.has_file(args[1])):
+    print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
+  else:
+    current_dir.remove_file(args[1]); 
+    print(f'{Fore.GREEN}file removed.{Style.RESET_ALL}', end='\n\n');
+  return 
+
+def remove_directory(args):
+  if(not current_dir.has_dir(args[1])):
+    print(f'{Fore.RED}no such directory.{Style.RESET_ALL}', end='\n\n');
+    return;
+  else:
+    current_dir.remove_directory(args[1]); 
+    print(f'{Fore.GREEN}directory removed.{Style.RESET_ALL}', end='\n\n');
+  return; 
+
+def change_directory(args):
+  global current_dir;
+  if(not current_dir.has_dir(args[0])):
+    print(f'{Fore.RED}no such directory.{Style.RESET_ALL}', end='\n\n');
+  else:
+    current_dir = current_dir.child_directory(args[0]); 
+  return; 
+
+def parent_directory():
+  global current_dir;
+  if(current_dir.parent != ""):
+    current_dir = current_dir.parent; 
+  return;  
+
+def root_directory():
+  current_dir = root; 
+  return;
+
+
+
+
+
+
+
+
+
