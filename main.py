@@ -80,11 +80,11 @@ def begin(thread_num, username):
     return line.split(' ')[0].strip();
   def getInstructionArguments(line):
     line = line.strip();
-    args = line[line.index(' ') + 1:].split(',');
-    # check if intruction has any arguments: 
-    if(len(args) > 0):
-      return args;
-    return [''];
+    # if no arguments
+    if(line.find(' ') == -1):
+      return [' '];  
+    return line[line.index(' ') + 1:].split(',');
+
 
   def get_command(line):
     command = instructions_commands_map[getInstruction(line)];
@@ -109,12 +109,12 @@ def begin(thread_num, username):
 
 NUMBER_OF_USERS = 2;
 
-# for i in range(NUMBER_OF_USERS):
-#   thread = threading.Thread(target=begin, args=(i+1, 'user_' + str(i+1)))
-#   thread.start();
+for i in range(NUMBER_OF_USERS):
+  thread = threading.Thread(target=begin, args=(i+1, 'user_' + str(i+1)))
+  thread.start();
   
-thread = threading.Thread(target=begin, args=(2, 'user_2'))
-thread.start();
+# thread = threading.Thread(target=begin, args=(2, 'user_2'))
+# thread.start();
 # time.sleep(1)
 # run_command(['mkdir', 'dir1']);``
 # run_command(['cd', 'dir1']);
