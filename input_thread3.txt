@@ -1,5 +1,5 @@
-
-
-
-
-
+create sample2.txt
+open file1.txt,r
+read_from_file file1.txt,0,100
+chDir dir1
+chDir ..

@@ -1,3 +1,4 @@
+delete file1.txt
 mkdir dir1
 chDir dir1
 create sample.txt

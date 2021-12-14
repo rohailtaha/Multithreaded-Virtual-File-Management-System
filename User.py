@@ -5,10 +5,11 @@ from util_structures import commands_desc;
 
 class User:
 
+  # The root will be common for all user instances
   root = Directory('', 'root');
-  current_dir = root;
 
   def __init__(self, name):
+    self.current_dir = self.root;
     self.name = name
 
   def create_file(self, name):
@@ -173,10 +174,10 @@ class User:
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
 
   def remove_file(self, args):
-    if(not self.current_dir.has_file(args[1])):
+    if(not self.current_dir.has_file(args[0])):
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
     else:
-      self.current_dir.remove_file(args[1]); 
+      self.current_dir.remove_file(args[0]); 
       print(f'{Fore.GREEN}file removed.{Style.RESET_ALL}', end='\n\n');
 
   def remove_directory(self, args):

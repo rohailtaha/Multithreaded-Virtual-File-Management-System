@@ -3,9 +3,8 @@ from File import File;
 from util_structures import commands_names as commands, instructions_commands_map;
 from colorama import Fore, Style;
 import threading
-import commands_to_execute as user;
-import time;
-from commands_to_execute import User;
+import User;
+from User import User;
 
 def run_command(cd, user):
 
@@ -94,34 +93,24 @@ def begin(thread_num, username):
   input_file = open('input_thread' + str(thread_num) + '.txt');
   output_file = open('output_thread' + str(thread_num) + '.txt', 'a');
   while(True):
-    user.display_current_directory();
+    # user.display_current_directory();
     line = input_file.readline();
     if(line == ''):
       break;
     command = instructions_commands_map[getInstruction(line)];
     command_arguments = getInstructionArguments(line);
-    # print(getInstructionArguments(line));
 
     print('thread:', thread_num ,", command:", get_command(line), "\n");
     output_file.write("running command: " + get_command(line) + "\n");
 
     run_command([command] + command_arguments, user);
 
-NUMBER_OF_USERS = 2;
+
+# Enter 3 as number of users.
+NUMBER_OF_USERS = int(input('Enter number of users: '));
 
 for i in range(NUMBER_OF_USERS):
   thread = threading.Thread(target=begin, args=(i+1, 'user_' + str(i+1)))
   thread.start();
   
-# thread = threading.Thread(target=begin, args=(2, 'user_2'))
-# thread.start();
-# time.sleep(1)
-# run_command(['mkdir', 'dir1']);``
-# run_command(['cd', 'dir1']);
-# run_command(['mk', 'file.txt']);
-# run_command(['ls']);
-# run_command(['cd', '/']);
-# run_command(['ls']);
-
-
 
