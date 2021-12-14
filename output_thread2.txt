@@ -53,3 +53,9 @@ running command: mkdir dir1
 running command: cd dir1
 running command: mkdir dir1
 running command: cd dir1
+running command: mkdir dir1
+running command: cd dir1
+running command: mkdir dir1
+running command: cd dir1
+running command: mkdir dir1
+running command: cd dir1
