@@ -8,7 +8,10 @@ class User:
   root = Directory('', 'root');
   current_dir = root;
 
-  def create_file(name):
+  def __init__(self, name):
+    self.name = name
+
+  def create_file(self, name):
     return File({
       "name": name, 
       "content": "",
@@ -21,24 +24,24 @@ class User:
     return Directory(self.current_dir, name);
 
   def display_current_directory(self):
-    self.current_dir.display();
+    self.current_dir.display(self.name);
 
   def move_to_parent_directory(self):
     self.current_dir = self.current_dir.move_to_parent_directory();
 
-  def list_commands():
+  def list_commands(self):
     print("List of all commands:");
     for command in commands_desc:
       print(command['name'], end="  ");
     print("");  
 
-  def list_commands_with_desc():
+  def list_commands_with_desc(self):
     print("Details of all commands:");
     for command in commands_desc:
       print('{:<8} {:<70}'.format(command['name'] + ": ", command['description']));
     print("");  
 
-  def permission_valid(permission):  
+  def permission_valid(self, permission):  
     return permission in ['r', 'w'];
 
   def list(self):
@@ -55,21 +58,21 @@ class User:
       self.current_dir.add_directory(self.create_directory(args[0])); 
       print(f'{Fore.GREEN}directory created.{Style.RESET_ALL}', end='\n\n');
 
-  def make_file(args):
+  def make_file(self, args):
     if(self.current_dir.has_file(args[0])):
         print(f'{Fore.RED}file with this name already exists.{Style.RESET_ALL}', end='\n\n');
     else:
-      self.current_dir.add_file(create_file(args[0])); 
+      self.current_dir.add_file(self.create_file(args[0])); 
       print(f'{Fore.GREEN}file created.{Style.RESET_ALL}', end='\n\n');
 
-  def open_file(args):
+  def open_file(self,args):
     if(self.current_dir.has_file(args[0])):
       self.current_dir.file(args[0]).open(args[1]);
       print(f'{Fore.GREEN}file opened.{Style.RESET_ALL}', end='\n\n');
     else:
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
 
-  def close_file(args):
+  def close_file(self, args):
     if(self.current_dir.has_file(args[0])):
       self.current_dir.file(args[0]).close();
       print(f'{Fore.GREEN}file closed.{Style.RESET_ALL}', end='\n\n');
@@ -78,7 +81,7 @@ class User:
     return;
 
 
-  def read(args):
+  def read(self, args):
     file = self.current_dir.file(args[0]);
     if(not file):
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
@@ -93,7 +96,7 @@ class User:
       print();
 
 
-  def write(args):
+  def write(self, args):
     file = self.current_dir.file(args[0]);
     if(not file):
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
@@ -108,7 +111,7 @@ class User:
       print(f'{Fore.GREEN}file updated.{Style.RESET_ALL}', end='\n\n');
 
 
-  def append(args):
+  def append(self, args):
     file = self.current_dir.file(args[0]);
     if(not file):
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
@@ -122,7 +125,7 @@ class User:
       file.append(args[1]);
       print(f'{Fore.GREEN}file updated.{Style.RESET_ALL}', end='\n\n');
 
-  def move_file(args):
+  def move_file(self, args):
     file = self.current_dir.file(args[0]);
     if(not file):
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
@@ -130,7 +133,7 @@ class User:
     file.name = args[1];  
     print(f'{Fore.GREEN}file moved.{Style.RESET_ALL}', end='\n\n');
 
-  def truncate_file(args):
+  def truncate_file(self, args):
     file = self.current_dir.file(args[0]);
     if(not file):
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
@@ -138,53 +141,52 @@ class User:
     file.truncate(args[1]);
     print(f'{Fore.GREEN}file truncated.{Style.RESET_ALL}', end='\n\n');
 
-  def show_memory_map():
-    if(len(root.files) > 0):
+  def show_memory_map(self):
+    if(len(self.root.files) > 0):
       print();
       print('{:<16} {:<9} {:<16} {:<12}'.format('file', 'inode', 'size (bytes)', 'total pages'));
-      root.traverse(root);
+      self.root.traverse(self.root);
       print();
     else:
       print(f'{Fore.RED}nothing to show.{Style.RESET_ALL}', end='\n\n');
 
-  def read_permission(args):
+  def read_permission(self, args):
     if(self.current_dir.has_file(args[1])):
       self.current_dir.file(args[1]).read_permissions();
     else:
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
 
-  def grant_permission(args):
+  def grant_permission(self, args):
     if(self.current_dir.has_file(args[1])):
       file = self.current_dir.file(args[1]);
       permission = input('Permsission (r -> read, w -> write): ');
-      file.grant_permission(permission) if(permission_valid(permission)) else print(f'{Fore.RED}invalid permission.{Style.RESET_ALL}', end='\n\n');
+      file.grant_permission(permission) if(self.permission_valid(permission)) else print(f'{Fore.RED}invalid permission.{Style.RESET_ALL}', end='\n\n');
     else:
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
 
-  def remove_permission(args):
+  def remove_permission(self,args):
     if(self.current_dir.has_file(args[1])):
       file = self.current_dir.file(args[1]);
       permission = input('Permsission to remove (r -> read, w -> write): ');
-      file.remove_permission(permission) if(permission_valid(permission)) else print(f'{Fore.RED}invalid permission.{Style.RESET_ALL}', end='\n\n');
+      file.remove_permission(permission) if(self.permission_valid(permission)) else print(f'{Fore.RED}invalid permission.{Style.RESET_ALL}', end='\n\n');
     else:
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
 
-  def remove_file(args):
+  def remove_file(self, args):
     if(not self.current_dir.has_file(args[1])):
       print(f'{Fore.RED}no such file.{Style.RESET_ALL}', end='\n\n');
     else:
       self.current_dir.remove_file(args[1]); 
       print(f'{Fore.GREEN}file removed.{Style.RESET_ALL}', end='\n\n');
 
-  def remove_directory(args):
+  def remove_directory(self, args):
     if(not self.current_dir.has_dir(args[1])):
       print(f'{Fore.RED}no such directory.{Style.RESET_ALL}', end='\n\n');
     else:
       self.current_dir.remove_directory(args[1]); 
       print(f'{Fore.GREEN}directory removed.{Style.RESET_ALL}', end='\n\n');
 
-  def change_directory(args):
-    global self.current_dir;
+  def change_directory(self, args):
     # check if user wants to go to previous directory
     if(args[0] == '..'):
       if(self.current_dir.parent != ""):
@@ -192,7 +194,7 @@ class User:
       return;
 
     if(args[0] == '/'):
-      self.current_dir = root;  
+      self.current_dir = self.root;  
       return;
 
     if(not self.current_dir.has_dir(args[0])):

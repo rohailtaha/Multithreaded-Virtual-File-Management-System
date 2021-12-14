@@ -69,14 +69,13 @@ class Directory:
       print(f'{Fore.YELLOW}{directory.name}{Style.RESET_ALL}', end="  ");
     print();  
 
-  def display(self): 
-    path = "";
+  def display(self, username): 
+    path = '';
     temp = self; 
     while (temp.parent != ""):
       path = temp.name + "/" + path;
       temp = temp.parent;
-    path = temp.name + "/" + path;  
-    # print(path);
+    path = '(' + username + ') ' + temp.name + "/" + path;  
     print(f'{Fore.BLUE}==> {path}{Style.RESET_ALL}');
 
   # @ RETURN: 

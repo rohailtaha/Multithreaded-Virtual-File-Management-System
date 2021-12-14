@@ -59,3 +59,125 @@ running command: mkdir dir1
 running command: cd dir1
 running command: mkdir dir1
 running command: cd dir1
+running command: mkdir dir1
+running command: cd dir1
+running command: mkdir dir1
+running command: cd dir1
+running command: mkdir dir1
+running command: cd dir1
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.

@@ -73,18 +73,18 @@ def run_command(cd, user):
     print(f'{Fore.RED}Invalid command \'{cd}\'{Style.RESET_ALL}');
 
 
-def begin(thread_num):
-  user = User();
-  print (user.current_dir);
+def begin(thread_num, username):
+  user = User(username);
 
   def getInstruction(line):
     return line.split(' ')[0].strip();
   def getInstructionArguments(line):
     # remove new line charauserr from line; 
     line = line.strip();
+    # print(instructions_commands_map[getInstruction(line)] == 'wr')
     # check if intruction has any arguments: 
     if(len(line.split(' ')) > 1):
-      return line.split(' ')[1].split(',');
+      return line.split(' ')[1:];
     return [''];
 
   def get_command(line):
@@ -104,14 +104,17 @@ def begin(thread_num):
 
     print('thread:', thread_num ,", command:", get_command(line), "\n");
     output_file.write("running command: " + get_command(line) + "\n");
+
     run_command([command] + command_arguments, user);
 
-NUMBER_OF_USERS = 1;
+NUMBER_OF_USERS = 2;
 
-for i in range(NUMBER_OF_USERS):
-  thread = threading.Thread(target=begin, args=([2]))
-  thread.start();
+# for i in range(NUMBER_OF_USERS):
+#   thread = threading.Thread(target=begin, args=(i+1, 'user_' + str(i+1)))
+#   thread.start();
   
+thread = threading.Thread(target=begin, args=(2, 'user_2'))
+thread.start();
 # time.sleep(1)
 # run_command(['mkdir', 'dir1']);``
 # run_command(['cd', 'dir1']);
