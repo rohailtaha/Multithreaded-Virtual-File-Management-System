@@ -79,12 +79,11 @@ def begin(thread_num, username):
   def getInstruction(line):
     return line.split(' ')[0].strip();
   def getInstructionArguments(line):
-    # remove new line charauserr from line; 
     line = line.strip();
-    # print(instructions_commands_map[getInstruction(line)] == 'wr')
+    args = line[line.index(' ') + 1:].split(',');
     # check if intruction has any arguments: 
-    if(len(line.split(' ')) > 1):
-      return line.split(' ')[1:];
+    if(len(args) > 0):
+      return args;
     return [''];
 
   def get_command(line):
@@ -101,6 +100,7 @@ def begin(thread_num, username):
       break;
     command = instructions_commands_map[getInstruction(line)];
     command_arguments = getInstructionArguments(line);
+    # print(getInstructionArguments(line));
 
     print('thread:', thread_num ,", command:", get_command(line), "\n");
     output_file.write("running command: " + get_command(line) + "\n");

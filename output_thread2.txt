@@ -181,3 +181,164 @@ running command: cd dir1
 running command: mk sample.txt
 running command: op sample.txt w
 running command: wr sample.txt This is some sample text.
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt,This is some sample text.
+running command: wr sample.txt,Another sample text,12,19
+running command: cl sample.txt
+running command: op sample.txt,r
+running command: rd sample.txt,0,1000
+running command: cl sample.txt
+running command: cd ..
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This
+running command: wr sample.txt Another
+running command: cl sample.txt
+running command: op sample.txt r
+running command: rd sample.txt 0 1000
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This
+running command: wr sample.txt Another
+running command: cl sample.txt
+running command: op sample.txt r
+running command: rd sample.txt 0 1000
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This
+running command: wr sample.txt Another
+running command: cl sample.txt
+running command: op sample.txt r
+running command: rd sample.txt 0 1000
+running command: mk sample.txt
+running command: op sample.txt,w
+running command: wr sample.txt,This is some sample text.
+running command: wr sample.txt,Another sample text,12,19
+running command: cl sample.txt
+running command: op sample.txt,r
+running command: rd sample.txt,0,1000
+running command: cl sample.txt
+running command: cd ..
+running command: mk 
+running command: op 
+running command: mk
+running command: mk sample.txt
+running command: op sample.txt,w
+running command: wr sample.txt,This is some sample text.
+running command: wr sample.txt,Another sample text,12,19
+running command: cl sample.txt
+running command: op sample.txt,r
+running command: rd sample.txt,0,1000
+running command: cl sample.txt
+running command: cd ..
+running command: mk sample.txt
+running command: op sample.txt,w
+running command: wr sample.txt,This is some sample text.
+running command: wr sample.txt,Another sample text,12,19
+running command: cl sample.txt
+running command: op sample.txt,r
+running command: rd sample.txt,0,1000
+running command: cl sample.txt
+running command: cd ..
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This
+running command: wr sample.txt Another
+running command: cl sample.txt
+running command: op sample.txt r
+running command: rd sample.txt 0 1000
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: wr sample.txt Another sample text 12 19
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: wr sample.txt Another sample text 12 19
+running command: cl sample.txt
+running command: op sample.txt r
+running command: rd sample.txt 0 1000
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: wr sample.txt Another sample text 12 19
+running command: cl sample.txt
+running command: op sample.txt r
+running command: rd sample.txt 0 1000
+running command: cl sample.txt
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: wr sample.txt Another sample text 12 19
+running command: cl sample.txt
+running command: op sample.txt r
+running command: rd sample.txt 0 1000
+running command: cl sample.txt
+running command: mkdir dir1
+running command: cd dir1
+running command: mk sample.txt
+running command: op sample.txt w
+running command: wr sample.txt This is some sample text.
+running command: wr sample.txt Another sample text 12 19
+running command: cl sample.txt
+running command: op sample.txt r
+running command: rd sample.txt 0 1000
+running command: cl sample.txt
+running command: cd ..

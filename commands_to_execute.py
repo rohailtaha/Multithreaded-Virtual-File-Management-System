@@ -92,7 +92,7 @@ class User:
     elif(not file.read_permission()):
       print(f'{Fore.RED}you do not have permission to read this file.{Style.RESET_ALL}', end='\n\n');
     else:
-      file.read(args[1], args[2]);
+      file.read(int(args[1]), int(args[2]));
       print();
 
 
@@ -107,7 +107,7 @@ class User:
     elif(not file.write_permission()):
       print(f'{Fore.RED}you do not have permission to write to this file.{Style.RESET_ALL}', end='\n\n');
     else:
-      file.write(args[1]) if len(args) == 2 else file.write(args[1], args[2], args[3])
+      file.write(args[1]) if len(args) == 2 else file.write(args[1], int(args[2]), int(args[3]))
       print(f'{Fore.GREEN}file updated.{Style.RESET_ALL}', end='\n\n');
 
 

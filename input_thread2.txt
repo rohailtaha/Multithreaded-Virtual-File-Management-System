@@ -1,10 +1,11 @@
 mkdir dir1
 chDir dir1
 create sample.txt
-open sample.txt w
-write_to_file sample.txt This is some sample text.
+open sample.txt,w
+write_to_file sample.txt,This is some sample text.
+write_to_file sample.txt,Another sample text,12,19 
 close sample.txt
-open sample.txt r
-read_from_file sample.txt 0 1000
+open sample.txt,r
+read_from_file sample.txt,0,1000
 close sample.txt
 chDir ..

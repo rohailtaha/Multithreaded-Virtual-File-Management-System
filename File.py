@@ -47,7 +47,7 @@ class File:
       self.update_size();
 
   def replace(self, text, startLocation, size):
-    if(int(size) > len(text)): 
+    if(size > len(text)): 
       print(f'{Fore.RED}number of bytes to write are greater than the text size.{Style.RESET_ALL}', end='\n\n');
       return False;
 
